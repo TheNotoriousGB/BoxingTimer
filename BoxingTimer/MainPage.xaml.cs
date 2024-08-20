@@ -4,10 +4,15 @@
     {
         int count = 0;
 
+        int rounds = 0;
+
         public MainPage()
         {
             InitializeComponent();
         }
+
+        
+
 
         private void OnCounterClicked(object sender, EventArgs e)
         {

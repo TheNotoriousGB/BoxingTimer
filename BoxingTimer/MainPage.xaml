@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BoxingTimer.MainPage">
 
-    <ScrollView>
+    <ScrollView BackgroundColor="#121212">
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
@@ -14,19 +14,27 @@
                 SemanticProperties.Description="dot net bot in a race car number eight" />
 
             <Label
-                Text="Hello, World!"
+                Text="Boxing Timer"
                 Style="{StaticResource Headline}"
+                TextColor="White" 
                 SemanticProperties.HeadingLevel="Level1" />
 
             <Label
-                Text="Welcome to &#10;.NET Multi-platform App UI"
+                Text="Set the number of rounds"
                 Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+                TextColor="LightGray" 
+                    SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Number of rounds" />
+            
+            <Entry Placeholder="Enter the number of rounds"
+                   TextColor="White"
+                   />
 
             <Button
                 x:Name="CounterBtn"
-                Text="Click me" 
+                Text="Save" 
+                BackgroundColor="Gray" 
+                TextColor="White"   
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
