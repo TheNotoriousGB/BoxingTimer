@@ -1,26 +1,18 @@
-﻿namespace BoxingTimer
+﻿
+
+namespace BoxingTimer
 {
-    public partial class MainPage : ContentPage
-    {
-        public MainPage()
+  
+        public partial class MainPage : ContentPage
         {
-            InitializeComponent();
-        }
+            public MainPage()
+            {
+                InitializeComponent();
+                BindingContext = new ViewModel.MainViewModel();
+            }
 
-        
-
-
-        private void OnCounterClicked(object sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            // Wenn du eine Logik hast, die bei einem Button-Klick oder einem anderen Event ausgeführt werden soll, kannst du diese in der Code-Behind-Datei definieren
         }
     }
 
-}
+

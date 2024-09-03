@@ -1,44 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BoxingTimer.MainPage">
+             xmlns:local="clr-namespace:BoxingTimer.ViewModel"
+             x:Class="BoxingTimer.MainPage"
+             x:DataType="local:MainViewModel">
 
     <ScrollView BackgroundColor="#121212">
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Image
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
+        <StackLayout Padding="30,0" Spacing="25">
 
-            <Label
-                Text="Boxing Timer"
-                Style="{StaticResource Headline}"
-                TextColor="White" 
-                SemanticProperties.HeadingLevel="Level1" />
+            <Label Text="Boxing Timer" Style="{StaticResource Headline}" TextColor="White" SemanticProperties.HeadingLevel="Level1" />
 
-            <Label
-                Text="Set the number of rounds"
-                Style="{StaticResource SubHeadline}"
-                TextColor="LightGray" 
-                    SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Number of rounds" />
-            
-            <Entry Placeholder="Enter the number of rounds"
-                   TextColor="White"
-                   />
+            <Label Text="Set the number of rounds" Style="{StaticResource SubHeadline}" TextColor="LightGray" SemanticProperties.HeadingLevel="Level2" />
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Save" 
-                BackgroundColor="Gray" 
-                TextColor="White"   
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
-        </VerticalStackLayout>
+            <!-- Entry-Felder für die Eingabe -->
+            <Entry Placeholder="Rounds" Text="{Binding Rounds}" Keyboard="Numeric" TextColor="White" />
+            <Entry Placeholder="Round Time (in seconds)" Text="{Binding RoundTime}" Keyboard="Numeric" TextColor="White" />
+            <Entry Placeholder="Rest Time (in seconds)" Text="{Binding RestTime}" Keyboard="Numeric" TextColor="White" />
+
+            <Button Text="Save"
+                    BackgroundColor="Gray"
+                    TextColor="White"
+                    Command="{Binding SaveCommand}" 
+                    HorizontalOptions="Fill" />
+        </StackLayout>
     </ScrollView>
-
 </ContentPage>
