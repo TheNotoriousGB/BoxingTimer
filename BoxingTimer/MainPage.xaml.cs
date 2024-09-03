@@ -2,10 +2,6 @@
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
-        int rounds = 0;
-
         public MainPage()
         {
             InitializeComponent();
