@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using BoxingTimer.Models;
+using BoxingTimer.Models;   
 using Microsoft.Maui.Controls;
 
 namespace BoxingTimer.ViewModel

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui;
+using Plugin.Maui.Audio;
 
 namespace BoxingTimer
 {
@@ -15,7 +17,8 @@ namespace BoxingTimer
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-       
+            builder.Services.AddSingleton(AudioManager.Current);
+            
 
 #if DEBUG
             builder.Logging.AddDebug();

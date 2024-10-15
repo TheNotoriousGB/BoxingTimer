@@ -3,6 +3,8 @@ using System.Linq;
 using System.Timers;
 using Microsoft.Maui.Controls;
 using BoxingTimer.Models;
+using Plugin.Maui.Audio;
+
 namespace BoxingTimer
 {
     public partial class TimerPage : ContentPage
@@ -12,11 +14,14 @@ namespace BoxingTimer
         private TimeSpan _restTime;
         private TimeSpan _timeLeft;
         private bool _isRestTime;
+        private readonly IAudioManager audioManager;
 
         public TimerPage()
         {
+            audioManager = new AudioManager(); 
             InitializeComponent();
             LoadSettings();
+            
         }
 
         private async void LoadSettings()
@@ -34,13 +39,16 @@ namespace BoxingTimer
             }
         }
 
-        private void OnStartTimerClicked(object sender, EventArgs e)
+        private async void OnStartTimerClicked(object sender, EventArgs e)
         {
             if (_timer != null) return;
 
             _timer = new System.Timers.Timer(1000);
             _timer.Elapsed += OnTimerElapsed;
             _timer.Start();
+
+            var player = audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("fighte-clip.wav"));
+            player.Play();
         }
 
         private void OnStopTimerClicked(object sender, EventArgs e)
