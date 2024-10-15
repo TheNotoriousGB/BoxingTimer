@@ -4,14 +4,10 @@
              x:Class="BoxingTimer.TimerPage">
 
     <VerticalStackLayout Padding="30" Spacing="25" BackgroundColor="#121212">
-        <Label
-            x:Name="RoundsLabel"
-            Text=""
-            Style="{StaticResource Headline}"
-            TextColor="White"
-            SemanticProperties.HeadingLevel="Level1" />
-
-        <!-- Weitere Elemente für den Timer können hier hinzugefügt werden -->
+        <Label Text="Countdown Timer" FontSize="24" HorizontalOptions="Center" TextColor="White" />
+        <Label x:Name="TimerLabel" FontSize="48" HorizontalOptions="Center" TextColor="White" />
+        <Button Text="Start Timer" Clicked="OnStartTimerClicked" />
+        <Button Text="Stop Timer" Clicked="OnStopTimerClicked" />
 
     </VerticalStackLayout>
 </ContentPage>
