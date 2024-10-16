@@ -12,7 +12,7 @@
 
             <Label Text="Set the number of rounds" Style="{StaticResource SubHeadline}" TextColor="LightGray" SemanticProperties.HeadingLevel="Level2" />
 
-            <!-- Entry-Felder für die Eingabe -->
+           
             <Entry Placeholder="Rounds" Text="{Binding Rounds}" Keyboard="Numeric" TextColor="White" />
             <Entry Placeholder="Round Time (in seconds)" Text="{Binding RoundTime}" Keyboard="Numeric" TextColor="White" />
             <Entry Placeholder="Rest Time (in seconds)" Text="{Binding RestTime}" Keyboard="Numeric" TextColor="White" />

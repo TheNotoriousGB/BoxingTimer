@@ -8,7 +8,7 @@ namespace BoxingTimer
         {
             InitializeComponent();
 
-            // Füge die MainPage als Shell-Element hinzu
+            
             Items.Add(new ShellContent
             {
                 Content = new MainPage()

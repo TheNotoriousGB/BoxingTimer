@@ -9,17 +9,17 @@ namespace BoxingTimer.ViewModel
 {
     public partial class MainViewModel : INotifyPropertyChanged
     {
-        private readonly LocalDbService _dbService;
-        private readonly INavigation _navigation;
+        private readonly LocalDbService _dbService; // Instance of the LocalDbService class for database operations
+        private readonly INavigation _navigation; // Instance of the INavigation interface for navigation operations
 
         public MainViewModel(INavigation navigation)
         {
             _navigation = navigation;
-            _dbService = new LocalDbService();
-            SaveCommand = new Command(async () => await SaveData());
+            _dbService = new LocalDbService(); // Initialize the LocalDbService
+            SaveCommand = new Command(async () => await SaveData()); // Initialize the SaveCommand with an async command to save data
         }
 
-        private int rounds;
+        private int rounds; // Number of rounds
         public int Rounds
         {
             get => rounds;
@@ -28,12 +28,12 @@ namespace BoxingTimer.ViewModel
                 if (rounds != value)
                 {
                     rounds = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(); // Notify property changed
                 }
             }
         }
 
-        private int roundTime;
+        private int roundTime; // Duration of each round
         public int RoundTime
         {
             get => roundTime;
@@ -42,12 +42,12 @@ namespace BoxingTimer.ViewModel
                 if (roundTime != value)
                 {
                     roundTime = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(); // Notify property changed
                 }
             }
         }
 
-        private int restTime;
+        private int restTime; // Duration of rest time between rounds
         public int RestTime
         {
             get => restTime;
@@ -56,12 +56,12 @@ namespace BoxingTimer.ViewModel
                 if (restTime != value)
                 {
                     restTime = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(); // Notify property changed
                 }
             }
         }
 
-        public ICommand SaveCommand { get; }
+        public ICommand SaveCommand { get; } // Command to save data
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -70,6 +70,7 @@ namespace BoxingTimer.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        // Saves the data to the database and navigates to the TimerPage
         private async Task SaveData()
         {
             var timeModel = new TimeModel
@@ -79,8 +80,8 @@ namespace BoxingTimer.ViewModel
                 RestTime = this.RestTime
             };
 
-            await _dbService.SaveTime(timeModel);
-            await _navigation.PushAsync(new TimerPage()); // Navigiere zur TimerPage
+            await _dbService.SaveTime(timeModel); // Save the time model to the database using the LocalDbService
+            await _navigation.PushAsync(new TimerPage()); // Navigate to the TimerPage
         }
     }
 }
