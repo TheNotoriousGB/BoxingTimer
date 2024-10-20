@@ -10,7 +10,9 @@ public partial class MainPage : ContentPage
             BindingContext = new ViewModel.MainViewModel(Navigation);
         }
 
+
        
+
     }
     }
 

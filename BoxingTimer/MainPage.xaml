@@ -22,6 +22,8 @@
                     TextColor="White"
                     Command="{Binding SaveCommand}" 
                     HorizontalOptions="Fill" />
+
+            
         </StackLayout>
     </ScrollView>
 </ContentPage>

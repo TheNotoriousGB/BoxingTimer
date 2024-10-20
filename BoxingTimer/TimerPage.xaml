@@ -9,5 +9,10 @@
         <Button Text="Start Timer" Clicked="OnStartTimerClicked" />
         <Button Text="Stop Timer" Clicked="OnStopTimerClicked" />
 
+
+        <VerticalStackLayout.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Up" Swiped="OnSwipeUp" />
+        </VerticalStackLayout.GestureRecognizers>
+        
     </VerticalStackLayout>
 </ContentPage>
