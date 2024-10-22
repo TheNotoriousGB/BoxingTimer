@@ -11,7 +11,7 @@
 
 
         <VerticalStackLayout.GestureRecognizers>
-            <SwipeGestureRecognizer Direction="Up" Swiped="OnSwipeUp" />
+            <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipeLeft" />
         </VerticalStackLayout.GestureRecognizers>
         
     </VerticalStackLayout>

@@ -101,7 +101,7 @@ namespace BoxingTimer
             _isRestTime = false; // Setzt das Ruhezeit-Flag zurück
         }
 
-        private async void OnSwipeUp(object sender, SwipedEventArgs e)
+        private async void OnSwipeLeft(object sender, SwipedEventArgs e)
         {
             // Navigiere zu Page2
             await Navigation.PushAsync(new MainPage());
