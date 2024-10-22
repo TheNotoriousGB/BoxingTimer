@@ -9,101 +9,99 @@ namespace BoxingTimer
 {
     public partial class TimerPage : ContentPage
     {
-        private System.Timers.Timer _timer; // Timer-Objekt zur Verfolgung der verstrichenen Zeit
-        private TimeSpan _roundTime; // Dauer jeder Runde
-        private TimeSpan _restTime; // Dauer der Ruhepause
-        private TimeSpan _timeLeft; // Verbleibende Zeit für die aktuelle Runde oder Ruhepause
-        private bool _isRestTime; // Flag zur Anzeige, ob es sich um die Ruhepause handelt
-        private readonly IAudioManager audioManager; // Audio-Manager zum Abspielen von Audio-Clips
+        private int _rounds;
+        private int _currentRound; 
+        private System.Timers.Timer _timer;
+        private TimeSpan _roundTime;
+        private TimeSpan _restTime;
+        private TimeSpan _timeLeft;
+        private bool _isRestTime;
+        private readonly IAudioManager audioManager;
 
-        public TimerPage()
+        public TimerPage(TimeModel timeModel)
         {
-            audioManager = new AudioManager(); // Initialisiert den Audio-Manager
-            InitializeComponent(); // Initialisiert die Benutzeroberfläche
-            LoadSettings(); // Lädt die Einstellungen (Runden- und Ruhezeiten)
+            audioManager = new AudioManager();
+            InitializeComponent();
+            LoadSettings(timeModel); // Lädt die Einstellungen aus dem übergebenen TimeModel
         }
 
-        // Lädt die Einstellungen aus der Datenbank
-        private async void LoadSettings()
+        private void LoadSettings(TimeModel timeModel)
         {
-            var dbService = new LocalDbService(); // Instanziiert den Datenbankdienst
-            var times = await dbService.GetTimes(); // Holt die Zeiten aus der Datenbank
-
-            if (times.Any()) // Überprüft, ob es Zeiten gibt
-            {
-                var timeModel = times.First(); // Nimmt das erste Zeitmodell
-                _roundTime = TimeSpan.FromSeconds(timeModel.RoundTime); // Setzt die Rundenzeit
-                _restTime = TimeSpan.FromSeconds(timeModel.RestTime); // Setzt die Ruhezeit
-                _timeLeft = _roundTime; // Setzt die verbleibende Zeit auf die Rundenzeit
-                UpdateTimerLabel(); // Aktualisiert die Timer-Anzeige
-            }
+            _rounds = timeModel.Rounds; // Anzahl der Runden setzen
+            _roundTime = TimeSpan.FromSeconds(timeModel.RoundTime);
+            _restTime = TimeSpan.FromSeconds(timeModel.RestTime);
+            _timeLeft = _roundTime; // Setzt die verbleibende Zeit auf die Rundenzeit
+            UpdateTimerLabel(); // Aktualisiert die Anzeige mit der geladenen Zeit
         }
 
-        // Startet den Timer und spielt einen Audio-Clip ab
         private async void OnStartTimerClicked(object sender, EventArgs e)
         {
-            if (_timer != null) return; // Überprüft, ob der Timer bereits läuft
+            if (_timer != null || _currentRound >= _rounds) return; // Überprüfen, ob der Timer bereits läuft oder keine Runden mehr vorhanden sind
 
-            _timer = new System.Timers.Timer(1000); // Timer mit einem Intervall von 1 Sekunde
-            _timer.Elapsed += OnTimerElapsed; // Fügt den Ereignishandler für den Timer hinzu
-            _timer.Start(); // Startet den Timer
+            _currentRound = 0; // Zurücksetzen auf die erste Runde
+            _timer = new System.Timers.Timer(1000);
+            _timer.Elapsed += OnTimerElapsed;
+            _timer.Start();
 
-            var player = audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("fighte-clip.wav")); // Erstellt einen Spieler für den Audio-Clip
-            player.Play(); // Spielt den Audio-Clip ab
+            var player = audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("fighte-clip.wav"));
+            player.Play();
         }
 
-        // Stoppt den Timer
         private void OnStopTimerClicked(object sender, EventArgs e)
         {
-            StopTimer(); // Ruft die StopTimer-Methode auf
+            StopTimer();
         }
 
-        // Wird bei jedem Timer-Intervall aufgerufen
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            if (_timeLeft.TotalSeconds > 0) // Überprüft, ob noch Zeit verbleibt
+            if (_timeLeft.TotalSeconds > 0)
             {
-                _timeLeft = _timeLeft.Add(TimeSpan.FromSeconds(-1)); // Verringert die verbleibende Zeit um 1 Sekunde
-                UpdateTimerLabel(); // Aktualisiert die Timer-Anzeige
+                _timeLeft = _timeLeft.Add(TimeSpan.FromSeconds(-1));
+                UpdateTimerLabel();
             }
             else
             {
-                if (!_isRestTime) // Überprüft, ob es sich nicht um die Ruhepause handelt
+                if (!_isRestTime)
                 {
-                    _isRestTime = true; // Setzt das Flag auf Ruhezeit
+                    _isRestTime = true; // Wechsel zu Ruhezeit
                     _timeLeft = _restTime; // Setzt die verbleibende Zeit auf die Ruhezeit
-                    _timer.Start(); // Startet den Timer erneut (für die Ruhepause)
                 }
                 else
                 {
-                    StopTimer(); // Stoppt den Timer, wenn die Ruhezeit abgelaufen ist
+                    _currentRound++; // Nächste Runde
+                    if (_currentRound < _rounds)
+                    {
+                        _isRestTime = false; // Zurück zur Rundenzeit
+                        _timeLeft = _roundTime; // Setzt die verbleibende Zeit auf die nächste Rundenzeit
+                    }
+                    else
+                    {
+                        StopTimer(); // Stoppt den Timer, wenn alle Runden vorbei sind
+                    }
                 }
             }
         }
 
-        // Aktualisiert das Timer-Label in der Benutzeroberfläche
         private void UpdateTimerLabel()
         {
             Dispatcher.Dispatch(() =>
             {
-                TimerLabel.Text = _timeLeft.ToString(@"mm\:ss"); // Formatiert die verbleibende Zeit als "mm:ss"
+                TimerLabel.Text = _timeLeft.ToString(@"mm\:ss");
             });
         }
 
-        // Stoppt den Timer und setzt die Variablen zurück
         private void StopTimer()
         {
-            if (_timer == null) return; // Überprüft, ob der Timer nicht null ist
+            if (_timer == null) return;
 
-            _timer.Stop(); // Stoppt den Timer
-            _timer.Dispose(); // Gibt die Ressourcen des Timers frei
-            _timer = null; // Setzt den Timer auf null
-            _isRestTime = false; // Setzt das Ruhezeit-Flag zurück
+            _timer.Stop();
+            _timer.Dispose();
+            _timer = null;
+            _isRestTime = false;
         }
 
         private async void OnSwipeLeft(object sender, SwipedEventArgs e)
         {
-            // Navigiere zu Page2
             await Navigation.PushAsync(new MainPage());
         }
     }
